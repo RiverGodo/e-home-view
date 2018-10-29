@@ -1,0 +1,30 @@
+.fll{
+    float: left;
+}
+
+.flr{
+    float: right;
+}
+
+.clearfix{
+    &::after{
+        content: '';
+        display: block;
+        clear: both;
+    }
+}
+
+a {
+  text-decoration: none;
+  color: rgba(191, 203, 217);
+}
+
+.ml200{
+    margin-left: 200px;
+}
+
+//表格全局样式
+.table-item-img{
+width: 80px;
+height: 80px;
+}
