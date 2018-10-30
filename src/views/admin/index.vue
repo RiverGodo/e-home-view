@@ -12,7 +12,11 @@
                       <img  class="table-item-img" :src="scope.row.avatar" alt="" > 
                   </template>
               </el-table-column>
-              <el-table-column label="性别" prop="sex" ></el-table-column>
+              <el-table-column label="性别" prop="sex" >
+                  <template slot-scope="scope">
+                      {{scope.row.sex == 0 ? '女' : '男'}}
+                  </template>
+              </el-table-column>
               <el-table-column label="个性签名" prop="desc" />
               <el-table-column label="操作">
                   <template slot-scope="scope">
@@ -41,7 +45,8 @@ export default {
                     this.tableData = res.data
                 }
             })
-        }
+        },
+    
     },
     created(){
         this.getData()

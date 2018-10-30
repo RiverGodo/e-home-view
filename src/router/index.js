@@ -31,6 +31,30 @@ export default new Router({
             title:'管理员列表'
           },
           component: () => import('@/views/admin')
+        },
+        {
+          path:'addAdmin',
+          name:'addAdmin',
+          meta: {
+            title:'添加管理员'
+          },
+          component: () => import('@/views/admin/add')
+        },
+        {
+          path:'news',
+          name:'news',
+          meta:{
+            title:'新闻管理'
+          },
+          component: () => import('@/views/news')
+        },
+        {
+          path:'addNews',
+          name:'addNews',
+          meta:{
+            title:'添加新闻'
+          },
+          component: () => import('@/views/news/add')
         }
       ]
     },

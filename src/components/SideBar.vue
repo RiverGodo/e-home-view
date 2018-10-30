@@ -14,13 +14,33 @@
                         首页
                     </router-link>
                 </el-menu-item>
-                <el-submenu index="1-4">
+                <el-submenu index="admin-manage">
                     <div slot="title">
                         管理员管理
                     </div>
                     <el-menu-item index="/layout/adminUser" class="nav-item">
                         <router-link to="/layout/adminUser" >
                             管理员列表
+                        </router-link>
+                    </el-menu-item>
+                    <el-menu-item index="/layout/adminUser" class="nav-item">
+                        <router-link to="/layout/addAdmin" >
+                            添加管理员
+                        </router-link>
+                    </el-menu-item>
+                </el-submenu>
+                <el-submenu index="news-manage">
+                    <div slot="title">
+                        新闻管理
+                    </div>
+                    <el-menu-item index="/layout/news" class="nav-item">
+                        <router-link to="/layout/news" >
+                            新闻列表
+                        </router-link>
+                    </el-menu-item>
+                    <el-menu-item index="/layout/addNews" class="nav-item">
+                        <router-link to="/layout/addNews" >
+                            添加新闻
                         </router-link>
                     </el-menu-item>
                 </el-submenu>

@@ -1,5 +1,7 @@
 <template>
-    
+    <div>
+        获取所有新闻
+    </div>
 </template>
 
 <script>
