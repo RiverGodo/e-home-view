@@ -44,6 +44,21 @@
                         </router-link>
                     </el-menu-item>
                 </el-submenu>
+                <el-submenu index="swiper-manage">
+                    <div slot="title">
+                        轮播图管理
+                    </div>
+                    <el-menu-item index="/layout/swiper" class="nav-item">
+                        <router-link to="/layout/swiper" >
+                            轮播图列表
+                        </router-link>
+                    </el-menu-item>
+                    <el-menu-item index="/layout/addSwiper" class="nav-item">
+                        <router-link to="/layout/addSwiper" >
+                            添加轮播图
+                        </router-link>
+                    </el-menu-item>
+                </el-submenu>
             </el-menu>
     </div>
 </template>
@@ -73,11 +88,7 @@ export default {
         left: 0;
         bottom: 0;
         .nav-item{
-            display: block;
-            width: 100%;
-            height: 100%;
             background: #1f2d3d !important;
-
         }
     }
 </style>

@@ -5,6 +5,9 @@
                 添加新闻
             </div>
             <el-form :model="formData" label-width="80px" label-position="left">
+                <el-form-item label="新闻头图">
+                    <avatarUpload v-model="formData.img"></avatarUpload>
+                </el-form-item>
               <el-form-item label="新闻标题" required >
                 <el-input v-model="formData.title" placeholder=""></el-input>
               </el-form-item>
@@ -23,15 +26,25 @@
                 <quill-editor 
                     v-model="formData.content"
                     ref="myQuillEditor"
+                    @change="editChange($event)"
                     :options="editorOption"
                 >
                 </quill-editor>
               </el-form-item>
-              <el-form-item label="新闻标题" required >
-                <el-input v-model="formData.title" placeholder=""></el-input>
+              <el-form-item label="新闻分类" required >
+                  <el-select v-model="formData.type" placeholder="请选择分类">
+                    <el-option 
+                        v-for="(item, index) in categories" 
+                        :key="index" 
+                        :value="item._id"
+                        :label="item.title">
+                    </el-option>
+                  </el-select>
               </el-form-item>
-              <el-form-item label="新闻标题" required >
-                <el-input v-model="formData.title" placeholder=""></el-input>
+              <el-form-item >
+                  <el-button type="primary" @click="handleSubmit">
+                      提交
+                  </el-button>
               </el-form-item>
             </el-form>
         </el-card>
@@ -40,6 +53,7 @@
 </template>
 
 <script>
+    import avatarUpload from '@/components/upload-avatar'
     import 'quill/dist/quill.core.css'
     import 'quill/dist/quill.snow.css'
     import 'quill/dist/quill.bubble.css'
@@ -49,7 +63,7 @@
     Quill.register('modules/ImageExtend', ImageExtend)
 
 export default {
-    components: {quillEditor},
+    components: {quillEditor,avatarUpload},
     data(){
         return {
             formData:{
@@ -63,6 +77,7 @@ export default {
             },
             token:'',
             users:[],
+            categories:[],
 
             editorOption:{
                 modules: {
@@ -102,15 +117,37 @@ export default {
             axios.get('http://upload.yaojunrong.com/getToken').then(res=>{
                 this.token = res.data.data
             })
+        },
+        editChange({ quill, html, text }){
+            this.formData.contentText = text
+        },
+        getCategory() {
+            this.$axios.get('/admin/category').then(res => {
+                if(res.code == 200){
+                    this.categories = res.data
+                }
+            })
+        },
+        handleSubmit(){
+            this.$axios.post('/admin/news',this.formData).then(res => {
+                if(res.code == 200){
+                    this.$message.success(res.msg)
+                    this.$router.push({name:'news'})
+                }
+            })
         }
     },
     created(){
         this.getToken()
         this.getUser()
+        this.getCategory()
     }
 }
 </script>
 
 <style>
+ .ql-container{
+     min-height: 200px;
+ }
 
 </style>

@@ -9,6 +9,7 @@ export default new Router({
     {
       path: '/',
       name: 'login',
+      // redirect:'/layout' // 重定向
       component: () => import('@/views/Login')
     },
     {
@@ -55,7 +56,31 @@ export default new Router({
             title:'添加新闻'
           },
           component: () => import('@/views/news/add')
-        }
+        },
+        {
+          path:"swiper",
+          name:'swiper',
+          meta:{
+            title:'轮播图管理'
+          },
+          component: () => import('@/views/swiper')
+        },
+        {
+          path:"addSwiper",
+          name:'addSwiper',
+          meta:{
+            title:'添加轮播图'
+          },
+          component: () => import('@/views/swiper/add')
+        },
+        {
+          path:"editSwiper",
+          name:'editSwiper',
+          meta:{
+            title:'添加轮播图'
+          },
+          component: () => import('@/views/swiper/add')
+        },
       ]
     },
     

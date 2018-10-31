@@ -43,6 +43,8 @@ export default {
                 console.log(res);
                 if(res.code == 200){
                     this.tableData = res.data
+                }else if(res.code == 403){
+                    this.$router.push({name:'login'})
                 }
             })
         },
