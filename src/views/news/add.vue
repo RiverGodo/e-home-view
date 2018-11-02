@@ -4,15 +4,15 @@
             <div slot="header">
                 添加新闻
             </div>
-            <el-form :model="formData" label-width="80px" label-position="left">
+            <el-form :model="formData" label-width="80px" label-position="left" :rules="rules">
                 <el-form-item label="新闻头图">
                     <avatarUpload v-model="formData.img"></avatarUpload>
                 </el-form-item>
-              <el-form-item label="新闻标题" required >
-                <el-input v-model="formData.title" placeholder=""></el-input>
+              <el-form-item label="新闻标题" required prop="title">
+                <el-input v-model="formData.title" placeholder="请输入标题"></el-input>
               </el-form-item>
-              <el-form-item label="作者" required >
-                <el-select v-model="formData.author" placeholder="">
+              <el-form-item label="作者" required prop="author">
+                <el-select v-model="formData.author" placeholder="请选择作者">
                   <el-option 
                     v-for="(item, index) in users" 
                     :key="index" 
@@ -22,7 +22,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="新闻内容" required >
+              <el-form-item label="新闻内容">
                 <quill-editor 
                     v-model="formData.content"
                     ref="myQuillEditor"
@@ -31,8 +31,8 @@
                 >
                 </quill-editor>
               </el-form-item>
-              <el-form-item label="新闻分类" required >
-                  <el-select v-model="formData.type" placeholder="请选择分类">
+              <el-form-item label="新闻分类" required prop="type">
+                  <el-select v-model="formData.type" placeholder="请选择新闻分类">
                     <el-option 
                         v-for="(item, index) in categories" 
                         :key="index" 
@@ -101,6 +101,17 @@ export default {
                         }
                     }
                 }
+            },
+            rules:{
+                title: [
+                    { required: true, message: '请输入标题', trigger: 'blur' },
+                ],
+                author: [
+                    { required: true, message: '请选择作者', trigger: 'change'}
+                ],
+                type:[
+                    { required: true, message: '请选择新闻分类', trigger: 'change'}
+                ]
             }
         }
     },
@@ -129,12 +140,21 @@ export default {
             })
         },
         handleSubmit(){
-            this.$axios.post('/admin/news',this.formData).then(res => {
-                if(res.code == 200){
-                    this.$message.success(res.msg)
-                    this.$router.push({name:'news'})
-                }
-            })
+            if(!this.formData.title){
+                this.$message.error('新闻标题不能为空')
+            }else if(!this.formData.author){
+                this.$message.error('请选择作者')
+            }else if(!this.formData.type){
+                this.$message.error('请选择新闻分类')
+            }else {
+                    this.$axios.post('/admin/news',this.formData).then(res => {
+                    if(res.code == 200){
+                        this.$message.success(res.msg)
+                        this.$router.push({name:'news'})
+                    }
+                })
+            }
+
         }
     },
     created(){

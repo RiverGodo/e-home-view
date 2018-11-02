@@ -5,7 +5,7 @@
                 添加轮播图
             </div>
 
-            <el-form :model="formData" label-position="left" label-width="80px">
+            <el-form :model="formData" ref="formData" label-position="left" label-width="80px" :rules="rules">
               <el-form-item label="轮播图" required prop="img">
                   <UploadImg v-model="formData.img"></UploadImg>
               </el-form-item>
@@ -18,7 +18,8 @@
                         v-for="(item,index) in news" 
                         :key="index" 
                         :value="item._id"
-                        :label="item.title">
+                        :label="item.title"
+                        >
                     </el-option>
                   </el-select>
               </el-form-item>
@@ -73,31 +74,69 @@ export default {
                 status: 1 ,//控制显示
             },
             news : [],
-            isEdit:false
+            isEdit:false,
+            rules:{
+                title: [
+                        { required: true, message: '请输入标题', trigger: 'blur' },
+                    ],
+                newsId:[
+                    { required: true, message: '请选择新闻', trigger: 'change'}
+                ]
+            }
         }
     },
     methods:{
         getNews() {
             this.$axios.get('/admin/news').then(res => {
                 this.news = res.data
+                console.log(this.news);
             })
         },
         handleSubmit() {
-            this.$axios.post('/admin/swiper', this.formData).then(res => {
-                if(res.code == 200){
-                    this.$message.success(res.msg)
-                    this.$router.push({name:'swiper'})
+                if(!this.formData.img){
+                    this.$message.error('轮播图头图不能为空')
+                }else if(!this.formData.title){
+                    this.$message.error('标题不能为空')
+                }else if(!this.formData.newsId){
+                    this.$message.error('请选择新闻')
+                }else{
+                this.$axios.post('/admin/swiper', this.formData).then(res => {
+                        if(res.code == 200) {
+                            this.$message.success(res.msg)
+                            this.$router.push({name:'swiper'})
+                        }
+                    })
                 }
-            })
         },
         getEditData() {
             const id = this.$route.query.id
             this.$axios.get(`/admin/swiper/${id}`).then(res => {
                 this.formData = res.data
+                console.log(res);
+                if(this.formData.newsId == null){
+                    this.$message.error('新闻已删除')
+                }else{
+                    let newid = this.formData.newsId._id
+                    this.formData.newsId = newid
+                }
             })
         },
         handleSave() {
-
+            if(!this.formData.img){
+                    this.$message.error('轮播图头图不能为空')
+                }else if(!this.formData.title){
+                    this.$message.error('标题不能为空')
+                }else if(!this.formData.newsId){
+                    this.$message.error('请选择新闻')
+                }else{
+                    const id = this.$route.query.id
+                    this.$axios.patch(`/admin/swiper/${id}`, this.formData).then(res => {
+                        if(res.code == 200) {
+                        this.$message.success(res.msg)
+                        this.$router.push({name:'swiper'})
+                        }
+                    })
+                }
         },
         
         addorsave(){
@@ -122,6 +161,13 @@ export default {
                 this.isEdit = true 
             }else{
                 this.isEdit = false
+                this.formData = {
+                    img:'',
+                    title:'',
+                    newsId:'',
+                    sort:'',//控制排序
+                    status: 1 ,//控制显示
+                }
             }
         }
     }

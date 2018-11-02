@@ -53,6 +53,12 @@ const service = {
     },
     put(url,data,config){
         return this.fetch(url,data,config,'put')
+    },
+    patch(url,data,config){
+        return this.fetch(url,data,config,'patch')
+    },
+    delete(url,data,config){
+        return this.fetch(url,data,config,'delete')
     }
 }
 

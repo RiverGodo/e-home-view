@@ -1,6 +1,6 @@
 <template>
     <div >
-        我是首页
+        <img src="@/assets/NMSL.png" class="nmsl">
     </div>
 </template>
 
@@ -11,5 +11,8 @@ export default {
 </script>
 
 <style>
-
+    .nmsl{
+        width: 100%;
+        height: 100%;
+    }
 </style>
